@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "atomic": "cpp"
+    },
+    "makefile.configurations": [
+        {
+            "name": "Default",
+            "makeArgs": []
+        }
+    ],
+}

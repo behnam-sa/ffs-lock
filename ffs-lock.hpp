@@ -43,7 +43,8 @@ public:
 
     void unlock_write(ListElement *element)
     {
-        if (element->next == nullptr && tail.compare_exchange_strong(element, nullptr)) // TODO: check correctness
+        auto expected = element;
+        if (element->next == nullptr && tail.compare_exchange_strong(expected, nullptr)) // TODO: check correctness
             return;
 
         while (element->next == nullptr)
@@ -96,7 +97,9 @@ public:
             {
                 element->exclusive_lock.lock();
                 prev->next = nullptr;
-                if (element->next == nullptr && !tail.compare_exchange_strong(element, element->prev)) // TODO: check correctness
+
+                auto expected = element;
+                if (element->next == nullptr && !tail.compare_exchange_strong(expected, element->prev)) // TODO: check correctness
                 {
                     while (element->next == nullptr)
                         ;
@@ -106,6 +109,7 @@ public:
                 {
                     element->next->prev = element->prev;
                     element->prev->next = element->next;
+                    // element->spin = 0; // Bug???
                 }
 
                 element->exclusive_lock.unlock();
@@ -115,7 +119,8 @@ public:
         }
 
         element->exclusive_lock.lock();
-        if (element->next == nullptr && !tail.compare_exchange_strong(element, nullptr)) // TODO: check correctness
+        auto expected = element;
+        if (element->next == nullptr && !tail.compare_exchange_strong(expected, nullptr)) // TODO: check correctness
         {
             while (element->next == nullptr)
                 ;

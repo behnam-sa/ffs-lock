@@ -1,6 +1,7 @@
 {
     "files.associations": {
-        "atomic": "cpp"
+        "atomic": "cpp",
+        "thread": "cpp"
     },
     "makefile.configurations": [
         {

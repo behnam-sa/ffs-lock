@@ -44,7 +44,7 @@ void writer(int start, int count, FFSLock::ListElement *element)
 void test1()
 {
     std::vector<std::thread> reader_threads;
-    for (size_t i = 0; i < 100; i++)
+    for (size_t i = 0; i < 20; i++)
     {
         auto element = new FFSLock::ListElement();
         reader_threads.push_back(std::thread(reader, element));

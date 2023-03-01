@@ -32,7 +32,7 @@ public:
         element->spin = 1;
         element->next = nullptr;
 
-        auto pred = tail.exchange(element); // TODO: check correctness
+        auto pred = tail.exchange(element);
         if (pred != nullptr)
         {
             pred->next = element;
@@ -44,7 +44,7 @@ public:
     void unlock_write(ListElement *element)
     {
         auto expected = element;
-        if (element->next == nullptr && tail.compare_exchange_strong(expected, nullptr)) // TODO: check correctness
+        if (element->next == nullptr && tail.compare_exchange_strong(expected, nullptr))
             return;
 
         while (element->next == nullptr)
@@ -59,7 +59,7 @@ public:
         element->spin = 1;
         element->next = element->prev = nullptr;
 
-        auto pred = tail.exchange(element); // TODO: check correctness
+        auto pred = tail.exchange(element);
         if (pred != nullptr)
         {
             element->prev = pred;
@@ -99,7 +99,7 @@ public:
                 prev->next = nullptr;
 
                 auto expected = element;
-                if (element->next == nullptr && !tail.compare_exchange_strong(expected, element->prev)) // TODO: check correctness
+                if (element->next == nullptr && !tail.compare_exchange_strong(expected, element->prev))
                 {
                     while (element->next == nullptr)
                         ;
@@ -109,7 +109,6 @@ public:
                 {
                     element->next->prev = element->prev;
                     element->prev->next = element->next;
-                    // element->spin = 0; // Bug???
                 }
 
                 element->exclusive_lock.unlock();
@@ -120,7 +119,7 @@ public:
 
         element->exclusive_lock.lock();
         auto expected = element;
-        if (element->next == nullptr && !tail.compare_exchange_strong(expected, nullptr)) // TODO: check correctness
+        if (element->next == nullptr && !tail.compare_exchange_strong(expected, nullptr))
         {
             while (element->next == nullptr)
                 ;

@@ -41,7 +41,7 @@ void writer(int start, int count, FFSLock::ListElement *element)
     }
 }
 
-void test1()
+void test()
 {
     std::vector<std::thread> reader_threads;
     for (size_t i = 0; i < 20; i++)

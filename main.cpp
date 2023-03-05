@@ -4,7 +4,7 @@
 int main()
 {
     std::cout << "Testing" << std::endl;
-    test1();
+    test();
 
     std::cout << "All done" << std::endl;
     return 0;
